@@ -12,5 +12,31 @@ NULL
 
 render_template <- function(template, outfile, parameters) .Call(wrap__render_template, template, outfile, parameters)
 
+ExTera <- new.env(parent = emptyenv())
+
+ExTera$new <- function(template_glob) .Call(wrap__ExTera__new, template_glob)
+
+ExTera$add_str_templates <- function(templates) .Call(wrap__ExTera__add_str_templates, self, templates)
+
+ExTera$add_file_templates <- function(templates) .Call(wrap__ExTera__add_file_templates, self, templates)
+
+ExTera$list_templates <- function() .Call(wrap__ExTera__list_templates, self)
+
+ExTera$render_to_file <- function(template_name, parameters, outfile) .Call(wrap__ExTera__render_to_file, self, template_name, parameters, outfile)
+
+ExTera$render_to_string <- function(template_name, parameters) .Call(wrap__ExTera__render_to_string, self, template_name, parameters)
+
+ExTera$reload <- function() .Call(wrap__ExTera__reload, self)
+
+ExTera$autoescape_on <- function() .Call(wrap__ExTera__autoescape_on, self)
+
+ExTera$autoescape_off <- function() .Call(wrap__ExTera__autoescape_off, self)
+
+#' @export
+`$.ExTera` <- function (self, name) { func <- ExTera[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.ExTera` <- `$.ExTera`
+
 
 # nolint end

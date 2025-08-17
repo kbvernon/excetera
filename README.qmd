@@ -31,3 +31,19 @@ pak::pak("kbvernon/excetera")
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
+
+
+```{r}
+tdir <- tempdir()
+cat(
+  "<p>Hello {{ x }}</p>",
+  file = file.path(tdir, "hello-world.html")
+)
+
+cat(
+  r"(<img class="{{ img_class }}" src="{{ img_source }}>)",
+  file = file.path(tdir, "image-paths.html")
+)
+
+bob <- ExTera$new(file.path(tdir, "*"))
+```
