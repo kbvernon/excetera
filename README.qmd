@@ -32,18 +32,34 @@ pak::pak("kbvernon/excetera")
 
 This is a basic example which shows you how to solve a common problem:
 
-
 ```{r}
-tdir <- tempdir()
+library(excetera)
+
+tdir <- file.path(tempdir(), "tera")
+
+dir.create(tdir)
+
 cat(
-  "<p>Hello {{ x }}</p>",
+  "<p>Hello {{ x }}. This is {{ y }}.</p>",
   file = file.path(tdir, "hello-world.html")
 )
 
 cat(
-  r"(<img class="{{ img_class }}" src="{{ img_source }}>)",
+  r"(<img class="{{ img_class }}" src="{{ img_source }}">)",
   file = file.path(tdir, "image-paths.html")
 )
 
-bob <- ExTera$new(file.path(tdir, "*"))
+tera <- ExTera$new(file.path(tdir, "*"))
+
+tera$list_templates()
+
+tera$render_to_string(
+  "hello-world.html",
+  context = list(x = "world", y = "Tera")
+)
+
+tera$render_to_string(
+  "image-paths.html",
+  context = list(img_class = "tera-img", img_source = "path-to-img.png")
+)
 ```

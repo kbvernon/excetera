@@ -6,9 +6,11 @@ use tera::{Context, Tera};
 
 #[derive(Debug)]
 #[extendr]
+/// @export
 struct ExTera(Tera);
 
 #[extendr]
+/// @export
 impl ExTera {
     fn new(template_glob: &str) -> ExTera {
         match Tera::new(template_glob) {
@@ -62,10 +64,10 @@ impl ExTera {
     fn render_to_file(
         &self,
         template_name: &str,
-        parameters: HashMap<String, String>,
+        context: HashMap<String, String>,
         outfile: &str,
     ) -> Rbool {
-        let context = match Context::from_serialize(parameters) {
+        let context = match Context::from_serialize(context) {
             Ok(ctx) => ctx,
             Err(e) => throw_r_error(&format!("Failed to serialize context: {}", e)),
         };
@@ -90,8 +92,8 @@ impl ExTera {
     }
 
     /// Render a single template and return as string
-    fn render_to_string(&self, template_name: &str, parameters: HashMap<String, String>) -> String {
-        let context = match Context::from_serialize(parameters) {
+    fn render_to_string(&self, template_name: &str, context: HashMap<String, String>) -> String {
+        let context = match Context::from_serialize(context) {
             Ok(ctx) => ctx,
             Err(e) => throw_r_error(&format!("Failed to serialize context: {}", e)),
         };
@@ -124,7 +126,7 @@ impl ExTera {
 }
 
 #[extendr]
-fn render_template(template: &str, outfile: &str, parameters: HashMap<String, String>) -> Rbool {
+fn render_template(template: &str, outfile: &str, context: HashMap<String, String>) -> Rbool {
     let template_content = match fs::read_to_string(template) {
         Ok(content) => content,
         Err(e) => throw_r_error(&format!(
@@ -139,7 +141,7 @@ fn render_template(template: &str, outfile: &str, parameters: HashMap<String, St
         throw_r_error(&format!("Could not add template: {}", e));
     }
 
-    let context = match Context::from_serialize(parameters) {
+    let context = match Context::from_serialize(context) {
         Ok(t) => t,
         Err(e) => throw_r_error(&format!("Failed to serialize context: {}", e)),
     };

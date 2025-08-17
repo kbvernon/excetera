@@ -2,4 +2,5 @@
 
 S3method("$",ExTera)
 S3method("[[",ExTera)
+export(ExTera)
 useDynLib(excetera, .registration = TRUE)
